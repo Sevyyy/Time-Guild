@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    var attendnum = {{attendnum}};
+    var publishnum = {{publishnum}};
+    if (attendnum > 99){
+      $("#badge1").text("99+");
+    }else {
+      $("#badge1").text("{{attendnum}}");
+    }
+    if (publishnum > 99){
+      $("#badge2").text("99+");
+    }else {
+      $("#badge2").text("{{publishnum}}");
+    }
+    $('#tab-page a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
+  });
+</script>
+{% end %}
+
+{% block body %}
+<div class="container">
+  <!-- 左侧信息栏 -->
+  <div class="col-md-3">
+    <div id="info-container">
+      {% if role == "Individual" %}
+      <h3 style="font-weight:900;">个人信息</h3>
+      <div class="actv-list">
+        <img class="actv-img" src="/static/img/task/defaultPic_1.jpg" alt="img" onerror="this.src='/static/img/task/defaultPic_1.jpg';">
+        <li class="actv-title"><span>用户名:</span>{{info['name']}}</li>
+        <li class="actv-info">
+          <p>账号:{{info['account']}}</p>
+          <p>时间余额:{{info['money']}}</p>
+        </li>
+      </div>
+      {% else %}
+      <h3 style="font-weight:900;">组织信息</h3>
+      <div class="actv-list">
+        <img class="actv-img" src="/static/img/task/defaultPic_1.jpg" alt="img" onerror="this.src='/static/img/task/defaultPic_1.jpg';">
+        <li class="actv-title"><span>组织名:</span>{{info['name']}}</li>
+        <li class="actv-info">
+          <p>账号:{{info['account']}}</p>
+          <p>时间余额:{{info['money']}}</p>
+        </li>
+      </div>
+      {% end %}
+    </div>
+  </div>
+  <!-- 显示界面 -->
+  <div class="col-md-9 white-background" role="tablist">
+    <!-- 标签栏 -->
+    <!-- Nav tabs -->
+    <ul id="tab-page" class="nav nav-pills" role="tablist">
+      <li role="presentation" class="active"><a href="#accept" aria-controls="accept" role="tab" data-toggle="tab">我的任务 <span id="badge1" class="badge">99+</span></a></li>
+      <li role="presentation"><a href="#push" aria-controls="push" role="tab" data-toggle="tab">发布任务<span id="badge2" class="badge">99+</span></a></li>
+      <li role="presentation"><a href="#new" aria-controls="new" role="tab" data-toggle="tab">新的任务</a></li>
+      <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">设置</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- 接受的任务列表 -->
+      <div role="tabpanel" class="tab-pane active" id="accept" style="min-height:550px;background:#fff;">
+        <table class="table table-striped table-hover ">
+          <tr>
+            <th>任务名</th>
+            <th>发布人</th>
+            <th>奖励</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>任务状态</th>
+            <th>详情</th>
+          </tr>
+          {% for t in taskattend %}
+          <tr>
+            <td>{{t['name']}}</td>
+            <td>{{t['publisher']}}</td>
+            <td>{{t['credit']}}</td>
+            <td>{{t['startTime']}}</td>
+            <td>{{t['endTime']}}</td>
+            <td>
+              {% if  t["state"]==2 %}
+              <span id="status-2" class="label label-warning">进行中</span>
+              {% elif  t["state"]==3 %}
+              <span id="status-3" class="label label-danger">已完成</span>
+              {% elif  t["state"]==4 %}
+              <span id="status-4" class="label label-default">已结束</span>
+              {% end %}
+            </td>
+            <td>
+              <a href="/taskinfo?taskid={{t['ID']}}">查看详情</a>
+            </td>
+            <td></td>
+          </tr>
+          {% end %}
+        </table>
+      </div>
+      <!-- 发布的任务列表 -->
+      <div role="tabpanel" class="tab-pane" id="push" style="min-height:550px;background:#fff;">
+        <table class="table table-striped table-hover ">
+          <tr>
+            <th>任务名</th>
+            <th>奖励</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>状态</th>
+            <th>接收人</th>
+            <th>详情</th>
+          </tr>
+          {% for t in taskpublish %}
+          <tr>
+            <td>{{t['name']}}</td>
+            <td>{{t['credit']}}</td>
+            <td>{{t['startTime']}}</td>
+            <td>{{t['endTime']}}</td>
+            <td>
+              {% if t['state']==-1 %}
+              <span id="status--1" class="label label-default">审核未通过</span>
+              {% elif t['state']==0 %}
+              <span id="status-0" class="label label-default">待审核</span>
+              {% elif  t["state"]==1 %}
+              <span id="status-1" class="label label-primary">可接受</span>
+              {% elif  t["state"]==2 %}
+              <span id="status-2" class="label label-warning">进行中</span>
+              {% elif  t["state"]==3 %}
+              <span id="status-3" class="label label-danger">已完成</span>
+              {% elif  t["state"]==4 %}
+              <span id="status-4" class="label label-default">已结束</span>
+              {% end %}
+            </td>
+            <td>{{t['attender']}}</td>
+            <td>
+              <a href="/taskinfo?taskid={{t['ID']}}">查看详情</a>
+            </td>
+          </tr>
+          {% end %}
+        </table>
+      </div>
+      <!-- 新建任务 -->
+  <div role="tabpanel" class="tab-pane" id="new" style="min-height:550px;background:#fff;">
+        <script type="text/javascript">
+        function validate_form1(thisform)
+        {
+        with (thisform)
+          {
+            if (validate_required(taskname,"任务名不能为空!")==false)
+              {taskname.focus();return false}
+            if (validate_required(credit,"支付时间不能为空!")==false)
+              {credit.focus();return false}
+            else{
+              with(credit){
+                if(value > {{info['money']}})
+                {
+                  credit.focus();
+                  alert("余额不足!");
+                  return false;
+                }
+              }
+            }
+            if (validate_required(startTime,"开始时间不能为空")==false)
+              {startTime.focus();return false}
+            if (validate_required(endTime,"结束时间不能为空")==false)
+              {endTime.focus();return false}
+            if (validate_required(leader,"leader不能为空")==false)
+                {leader.focus();return false}
+            if (validate_required(phone,"leader不能为空")==false)
+                {phone.focus();return false}
+            if (validate_required(address,"地址不能为空")==false)
+              {address.focus();return false}
+            if (validate_required(description,"描述不能为空")==false)
+              {description.focus();return false}
+            if (validate_required(process,"流程不能为空")==false)
+              {process.focus();return false}
+            if (validate_required(requirement,"需求不能为空")==false)
+              {requirement.focus();return false}
+          }
+          alert("发布成功!")
+        }
+        </script>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 col-md-offset-1 ">
+          <div class="form-container">
+            <h3>发布一个任务</h3>
+            <form name="input" action="/taskpublish" method="post" onkeydown="if(event.keyCode==13){return false;}" onsubmit="return validate_form1(this);"> <!-- onsubmit="return validate_form(this)"-->
+              <div class="form-group">
+                <label>任务名</label>
+                <input type="text" name = "taskname" class="form-control" placeholder="新任务名">
+              </div>
+              <div class="form-group">
+                <label>支付时间</label>
+                <input type="number" name = "credit" class="form-control" placeholder="支付时间">
+              </div>
+              <div class="form-group">
+                <label>开始时间</label>
+                <input type="date" name = "startTime" class="form-control" >
+              </div>
+              <div class="form-group">
+                <label>结束时间</label>
+                <input type="date" name = "endTime" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>leader</label>
+                <input type="text" name = "leader" class="form-control" placeholder="leader">
+              </div>
+              <div class="form-group">
+                <label>手机</label>
+                <input type="text" name = "phone" class="form-control" placeholder="联系手机">
+              </div>
+              <div class="form-group">
+                <label>地址</label>
+                <input type="text" name = "address" class="form-control" placeholder="任务地址">
+              </div>
+              <div class="form-group">
+                <label>描述</label>
+                <textarea name = "description" rows="5" class="form-control" placeholder="任务描述"></textarea>
+              </div>
+              <div class="form-group">
+                <label>流程</label>
+                <textarea name = "process" rows="5" class="form-control" placeholder="任务流程"></textarea>
+              </div>
+              <div class="form-group">
+                <label>需求</label>
+                <textarea name = "requirement" rows="5"  class="form-control" placeholder="任务需求"></textarea>
+              </div>
+
+              <div class="form-group">
+                <input class="btn btn-primary btn-block" type="submit" value="发布">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <!-- 修改个人信息页面 -->
+      <div role="tabpanel" class="tab-pane" id="settings">
+        <script type="text/javascript">
+        function validate_form2(thisform)
+        {
+        with (thisform)
+          {
+            if (validate_required(name,"姓名不能为空!")==false)
+              {name.focus();return false}
+            if (validate_required(birthday,"生日不能为空!")==false)
+              {birthday.focus();return false}
+            if (validate_required(email,"email不能为空")==false)
+              {email.focus();return false}
+            if (validate_required(oldpassword,"旧密码不能为空")==false)
+              {oldpassword.focus();return false}
+            if (validate_required(newpassword,"新密码不能为空")==false)
+              {newpassword.focus();return false}
+            if (validate_required(newpasswordagain,"重复新密码不能为空")==false)
+              {newpasswordagain.focus();return false}
+            else{
+              var pass1 = document.getElementById("newpassword").value;
+              var pass2 = document.getElementById("newpasswordagain").value;
+              if(pass1 != pass2)
+              {
+                newpasswordagain.focus();
+                alert("重复新密码不匹配!");
+                return false;
+              }
+            }
+          }
+          alert("修改成功!")
+        }
+        </script>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 col-md-offset-1 ">
+          <div class="form-container">
+            <h3>修改你的个人资料</h3>
+            <form name="input" action="/userinfofix" method="post" onkeydown="if(event.keyCode==13){return false;}" onsubmit="return validate_form2(this);"> <!-- onsubmit="return validate_form(this)"-->
+              <div class="form-group">
+                <label>姓名</label>
+                <input type="text" name = "name" class="form-control" value={{info['name']}}>
+              </div>
+              <div class="form-group">
+                <label>生日</label>
+                <input type="date" name = "birthday" class="form-control" value={{info['birthday']}}>
+              </div>
+              <div class="form-group">
+                <label>email</label>
+                <input type="email" name = "email" class="form-control" value={{info['email']}}>
+              </div>
+              <div class="form-group">
+                <label>旧密码</label>
+                <input type="password" name = "oldpassword" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>新密码</label>
+                <input type="password" name = "newpassword" id ="newpassword" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>再次输入新密码</label>
+                <input type="password" name = "newpasswordagain" id="newpasswordagain" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <input class="btn btn-primary btn-block" type="submit" value="修改">
+              </div>
+            </form>
+
+          </div>
+        </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+{% end %}

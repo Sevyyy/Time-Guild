@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block head %}
+<script type="text/javascript">
+  function submit(id){
+    document.getElementById(id).submit();
+  }
+</script>
+
+
+{% end %}
+
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+
+      <div class="col-sm-9 blog-main white-backgroud padding-bottom-30px margin-bottom-30px">
+        <div class="blog-post">
+          <h2 class="blog-post-title" >任务名称: {{info["name"]}}</h2>
+          <p class="blog-post-meta" style="text-align:right;">{{info["startTime"]}}  by 发布者:<a href=#>{{info["publisher"]}}</a></p>
+        </div><!-- /.blog-post -->
+        <ol class="breadcrumb">
+          <li><a href="/">主页</a></li>
+          <li><a href="/tasklist">任务列表</a></li>
+          <li class="active">详情页</li>
+        </ol>
+        <hr>
+        <div class="blog-post">
+          <blockquote>
+            <h4>电话:</h4>
+            <p>{{info["phone"]}}</p>
+            <h4>地址:</h4>
+            <p>{{info["address"]}}</p>
+          </blockquote>
+          <img src={{info['picid']}} alt="static/img/task/defaultPic_1.jpg" style="margin: auto;display:block;width:60%;border-radius: 3px;">
+          <blockquote>
+            <h4><p>描述:</p></h4>
+          </blockquote>
+          <p>{{info["description"]}}</p>
+          <blockquote>
+          <h4><p>流程:</p></h4>
+        </blockquote>
+          <p>{{info["process"]}}</p>
+        </div>
+      </div>
+
+      <!-- 侧面panel -->
+      <div class="col-sm-3 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">title</h3>
+            </div>
+            <div class="panel-body">
+              <div class="task-status">
+                <h4 class="blockquote-reverse">
+                  <p style="float:left">任务状态:</p>
+                  {% if info['state']==-1 %}
+                  <span id="status--1" class="label label-default">审核未通过</span>
+                  {% elif info['state']==0 %}
+                  <span id="status-0" class="label label-default">待审核</span>
+                  {% elif  info["state"]==1 %}
+                  <span id="status-1" class="label label-primary">可接受</span>
+                  {% elif  info["state"]==2 %}
+                  <span id="status-2" class="label label-warning">进行中</span>
+                  {% elif  info["state"]==3 %}
+                  <span id="status-3" class="label label-danger">已完成</span>
+                  {% elif  info["state"]==4 %}
+                  <span id="status-4" class="label label-default">已结束</span>
+                  {% end %}
+                </h4>
+                <h5 class="blockquote-reverse">
+                  <p style="color:blue; float:left;">发布人:</p>
+                  <p>{{info['publisher']}}</p>
+                </h5>
+                <h5 class="blockquote-reverse">
+                  <p style="color:blue;float:left;">奖励:</p>
+                  <p>{{info['credit']}}</p>
+                </h5>
+                <p style="color:#ccc" class="blockquote-reverse">{{info["startTime"]}} - {{info["endTime"]}}</p>
+              </div>
+
+              <!-- button -->
+          {% if account != "$None$" %}
+            {% if account != str(info["publisher"]) and info["state"] == 1 %}
+            <form action="/taskattend?taskid={{taskid}}" method="post" id="form1">
+              <div class="btn-group btn-group-justified" id="accept-task" >
+                <div class="btn-group">
+                  <button type="button" class="btn btn-md btn-success" value="接受任务" onclick="submit(form1);">领取任务</button>
+                </div>
+              </div>
+            </form>
+              {% elif account != str(info["publisher"]) and info["state"] == 2 %}
+              <div class="btn-group btn-group-justified" id="accomplish-task">
+                <div class="btn-group">
+                  <form action="/taskfinish?taskid={{taskid}}" method="post" id="form2">
+                    <button type="button" class="btn btn-md btn-primary" value="任务完成" onclick="submit(form2)">任务完成</button>
+                  </form>
+                </div>
+                <div class="btn-group">
+                  <form action="/taskquit?taskid={{taskid}}" method="post" id="form3">
+                    <button type="button" class="btn btn-md btn-danger" value="放弃任务" onclick="submit(form3)">放弃任务</button>
+                  </form>
+                </div>
+              </div>
+              {% elif account == str(info["publisher"]) and info["state"] <= 1   %}
+            <div class="btn-group btn-group-justified" id="alter-task" >
+              <div class="btn-group">
+                <form action="#" method="post" id="form4">
+                  <button type="button" class="btn btn-md btn-warning" value="修改任务" onclick="submit(form4)">修改任务</button>
+                </form>
+              </div>
+              <div class="btn-group">
+                <form action="/taskcancel?taskid={{taskid}}" method="post" id="form5">
+                  <button type="button" class="btn btn-md btn-danger" value="删除任务" onclick="submit(form5)">删除任务</button>
+                </form>
+              </div>
+            </div>
+            {% elif account == str(info["publisher"]) and info["state"] == 3 %}
+            <form action="/taskcredit?taskid={{taskid}}" method="post" id="form6">
+              <div class="btn-group btn-group-justified" id="credit-task" >
+                <div class="btn-group">
+                  <button type="button" class="btn btn-md btn-success" value="支付时间" onclick="submit(form6)">支付时间</button>
+                </div>
+              </div>
+            </form>
+            {% end %}
+        {% end %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% end %}

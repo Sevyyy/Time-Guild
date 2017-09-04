@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block body %}
+<script type="text/javascript">
+  function update(x)
+  {
+    var role=document.getElementById(x).value;
+    if (role =="Individual")
+    {
+      $("div#diff1").show('fast', function() {
+
+      });
+      $("div#diff2").hide('fast', function() {
+
+      });
+    }else {
+      $("div#diff1").hide('fast', function() {
+
+      });
+      $("div#diff2").show('fast', function() {
+      });
+    }
+  }
+  function validate_form(thisform)
+  {
+  with (thisform)
+    {
+      with(role)
+      {
+        if(value == "Individual")
+        {
+          if (validate_required(account,"This Field must be filled out!")==false)
+            {account.focus();return false}
+          if (validate_required(password,"This Field must be filled out!")==false)
+            {password.focus();return false}
+          if (validate_required(email,"This Field must be filled out!")==false)
+            {email.focus();return false}
+          if (validate_required(i_name,"This Field must be filled out!")==false)
+            {i_name.focus();return false}
+          if (validate_required(ID,"This Field must be filled out!")==false)
+            {ID.focus();return false}
+          if (validate_required(birthday,"This Field must be filled out!")==false)
+            {birthday.focus();return false}
+        }
+        else
+        {
+          if (validate_required(account,"This Field must be filled out!")==false)
+            {account.focus();return false}
+          if (validate_required(password,"This Field must be filled out!")==false)
+            {password.focus();return false}
+          if (validate_required(email,"This Field must be filled out!")==false)
+            {email.focus();return false}
+          if (validate_required(o_name,"This Field must be filled out!")==false)
+            {o_name.focus();return false}
+          if (validate_required(leader,"This Field must be filled out!")==false)
+            {leader.focus();return false}
+          if (validate_required(address,"This Field must be filled out!")==false)
+            {address.focus();return false}
+          if (validate_required(establishedTime,"This Field must be filled out!")==false)
+            {establishedTime.focus();return false}
+        }
+      }
+    }
+  }
+</script>
+
+
+<div class="container">
+  <div class="row ">
+    <div class="form-container col-xs-6 col-md-6 col-center-block">
+      <h1>注册 <small>已有账号？<a href="/login">登录</a></small></h1>
+      <form name="input" action="/signup" method="post" onkeydown="if(event.keyCode==13){return false;}" onsubmit="return validate_form(this)">
+        <div class="form-group">
+          <label>手机号</label>
+          <input type="text" name="account"  class="form-control" placeholder="手机号" autofocus>
+        </div>
+  			<div class="form-group">
+  				<label>密码</label>
+  				<input type="password" name="password" class="form-control" placeholder="密码">
+  			</div>
+        <div class="form-group">
+          <label>邮箱</label>
+          <input type="email" name="email" class="form-control" placeholder="邮箱">
+        </div>
+  			<div id="diff1" class="form-group">
+  				<label>姓名</label>
+  				<input type="text" name="i_name" class="form-control" placeholder="姓名">
+  			</div>
+  			<div id="diff1" class="form-group">
+  				<label>学号</label>
+  				<input type="text" name="ID" class="form-control" placeholder="学号">
+  			</div>
+  			<div id="diff1" class="form-group">
+  				<label>生日</label>
+  				<input type="date" name = "birthday" class="form-control" placeholder="生日">
+  			</div>
+  			<div id="diff2" class="form-group" hidden="hidden">
+  				<label>组织名</label>
+  				<input type="text" name="o_name" class="form-control" placeholder="组织名">
+  			</div>
+  			<div id="diff2" class="form-group" hidden="hidden">
+  				<label>Leader</label>
+  				<input type="text" name="leader" class="form-control" placeholder="队长">
+  			</div>
+  			<div id="diff2" class="form-group" hidden="hidden">
+  				<label>地址</label>
+  				<input type="text" name = "address" class="form-control" placeholder="地址">
+  			</div>
+  			<div id="diff2" class="form-group" hidden="hidden">
+  				<label>成立时间</label>
+  				<input type="date" name = "establishedTime" class="form-control" placeholder="成立时间">
+  			</div>
+  			<div class="form-group">
+  				<label>身份:</label>
+  				<select class="form-control" id="role" name="role" onchange="update(this.id)">
+  					<option value="Individual">个人用户</option>
+  					<!-- <option value="Organization">团体</option> -->
+  				</select>
+  			</div>
+        <p>注册即代表您同意<a href="#">本网站服务条款</a></p>
+        <div class="form-group">
+          <input class="btn btn-primary btn-block" type="submit" value="注册">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% end %}

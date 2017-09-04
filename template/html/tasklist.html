@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <!-- 右侧推荐任务 -->
+  <div class="col-md-10 col-center-block margin-bottom-0px" >
+    <!-- 任务推荐标题 -->
+    <div class="row white-backgroud" style="margin:0.3%">
+      <h2 class="blog-title" >
+        <p style="margin-left:4%;margin-top:auto;">任务列表</p>
+      </h2>
+      <ol class="breadcrumb margin-bottom-0px white-backgroud">
+        <li><a href="/">主页</a></li>
+        <li class="active">任务列表</li>
+      </ol>
+    </div>
+    <hr>
+
+    <div class="row">
+      {% for t in info %}
+      <div class="col-xs-12 col-md-4 ">
+        <div class="actv-list">
+          <a target="_bank" href="/taskinfo?taskid={{t['id']}}">
+            <img class="actv-img" src={{t['picid']}} alt="img" onerror="this.src='/static/img/task/defaultPic_1.jpg';">
+          </a>
+          <li class="actv-title"><a class="hoverReda" target="_bank" href="/taskinfo?taskid={{t['id']}}">{{t['name']}}</a></li>
+          <li class="actv-info">
+            <p>奖励:{{t['credit']}}</p>
+            <p>地点:{{t['address']}}</p>
+            <p>时间：{{t['startTime']}} - {{t['endTime']}}</p>
+          </li>
+        </div>
+      </div>
+    {% end %}
+    </div>
+  </div>
+</div>
+{% end %}

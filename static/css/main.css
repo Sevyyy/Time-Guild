@@ -1,0 +1,118 @@
+/*背景*/
+li{
+  list-style: none;
+}
+html body{
+  background: #f8f8f8;
+}
+img{
+  display: block;
+  max-width: 100%;
+  margin-left: 0px;
+}
+/*标题栏*/
+header .navbar{
+  background: #4183D7
+}
+header .navbar .container .nav li a{
+  color: #fff
+}
+header .navbar .container .nav li a:hover{
+  color: #000
+}
+/*页脚(可修改)*/
+footer {
+  background: #4183D7;
+  text-align:center;
+  margin-bottom: 0;
+}
+footer .container p,footer .container p a{
+  color:#fff
+}
+/*左侧导航栏*/
+.side-bar .list-group-item{
+  border: 0;
+  border-radius: 3px;
+  margin-bottom: 2px;
+}
+.side-bar .list-group-item.active{
+  border: 0;
+  border-radius: 3px;
+  background-color: #4183D7;
+}
+/*任务列表*/
+.actv-list{
+  background: #fff;
+  border-radius: 5px;
+  float:none;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+.actv-list img{
+  display: block;
+  max-width: 100%;
+  border-radius: 3px;
+  padding: 5%;
+  padding-top: 8%;
+}
+.actv-title{
+  font-size: 15px;
+  font-weight: 900;
+  text-align: left;
+  padding-left: 10%;
+}
+.actv-info{
+  font-size: 10px;
+  color:#666;
+  text-align: right;
+  padding-right: 5%;
+  padding-bottom: 8%;
+}
+
+/*个人信息*/
+#userheader{
+  display: block;
+  max-width: 100%;
+  border-radius: 3px;
+  margin-left: 0px;
+}
+#info-container h4,#info-container .nav,#info-container .info{
+  background: #fff;
+}
+/*居中和左对齐*/
+.col-center-block{
+  float: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.col-right-block{
+  float: right;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+
+}
+.col-left-block{
+  float: left;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+/*白色背景*/
+.white-backgroud{
+  background: #fff;
+}
+.padding-bottom-30px{
+  padding-bottom: 30px;
+}
+.margin-bottom-30px{
+  margin-bottom: 30px;
+}
+.margin-bottom-0px{
+  margin-bottom: 0px;
+}

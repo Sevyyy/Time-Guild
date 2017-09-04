@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="http://www.atlasestateagents.co.uk/css/tether.min.css">
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/main.css">
+  <script src="http://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>
+  <script type="text/javascript" src="static/script/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="static/script/bootstrap.min.js"></script>
+  <script type="text/javascript" src="static/script/modal.js"></script>
+  <script type="text/javascript" src="static/script/tab.js"> </script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    var alert_text = '{{alert}}';
+    if(alert_text != "$None$")
+    {
+      alert(alert_text);
+    }
+  });
+  function validate_form(thisform)
+  {
+  with (thisform)
+  	{
+  		if (validate_required(account,"账户不能为空!")==false)
+  			{account.focus();return false}
+  		if (validate_required(password,"密码不能为空!")==false)
+  			{password.focus();return false}
+
+  	}
+  }
+  </script>
+  <title>{{title}}</title>
+</head>
+<body>
+  <div class="container">
+	  <div class="form-container col-xs-6 col-md-4 col-center-block">
+	    <h1>管理员登录</h1>
+	    <form name="input" action="/rootlogin" method="post" onkeydown="if(event.keyCode==13){return false;}" onsubmit="return validate_form(this)">
+	      <div class="form-group">
+	        <label>管理员账号</label>
+	        <input type="text" name="account" class="form-control" placeholder="管理员账号">
+	      </div>
+	      <div class="form-group">
+	        <label>管理员密码</label>
+	        <input type="password" name="password" class="form-control" placeholder="管理员密码">
+	      </div>
+	      <div class="form-group">
+	        <input class="btn btn-primary btn-block" id="login" type="submit" value="登录">
+	      </div>
+	    </form>
+	  </div>
+	</div>
+</body>
+</html>
